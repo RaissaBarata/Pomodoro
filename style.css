@@ -1,0 +1,79 @@
+:root {
+    --cor-pomodoro: linear-gradient(#7D56F0, #D3C6FA);
+    --cor-shortBreak: linear-gradient(#CF43EF, #F5D9FC);
+    --cor-longBreak: linear-gradient(#4ECCD0, #CFF1F2);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(#7D56F0, #D3C6FA);
+    font-family: 'Roboto', sans-serif;
+}
+   
+
+
+.container {
+    max-width: 450px;
+    width: 100%;
+    height: 400px;
+    border-radius: 20px;
+    background-color: #e3dcfa;
+    box-shadow: 5px 5px 10px 2px #0000003a;
+}
+
+.options {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 15px;
+}
+
+button {
+    background-color: #C5B5F8;
+    color: rgba(14, 14, 14, 0.678);
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 2px 2px 5px 1px #0000001c;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+
+
+}
+
+button:hover {
+    background-color: #997CF2;
+
+}
+
+button[active="true"] {
+    font-weight: 700;
+   
+}
+
+.timer {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+    font-size: 100px;
+    font-weight: 600;
+    color: rgba(14, 14, 14, 0.712);
+
+}
+
+.startButton{
+    font-size: 24px;
+    font-weight: 500;
+    background-color:  #7D56F0;
+    margin: 15px 30px 15px 100px;
+    padding: 15px 100px 15px 100px;
+    color: rgba(14, 14, 14, 0.623);
+
+}
+
+.startButton:hover{
+    background-color: #C5B5F8;
+}
