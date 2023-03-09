@@ -30,14 +30,14 @@ changeBackground.addEventListener('click', () => {
 })
 
 changeBackground1.addEventListener('click', () => {
-    body.style.background = 'linear-gradient(#CF43EF, #F5D9FC)'
+    animateLinearGradient("linear-gradient(#7D56F0, #D3C6FA)", "linear-gradient(#CF43EF, #F5D9FC)", 1000) 
     buttons.forEach(button => button.style.backgroundColor = '#F5D9FC');
     startButton.style.background = '#CF43EF'
     container.style.backgroundColor = "#f1c7fa"
 })
 
 changeBackground2.addEventListener('click', () => {
-    body.style.background = 'linear-gradient(#4ECCD0, #CFF1F2)'
+    animateLinearGradient("linear-gradient(#CF43EF, #F5D9FC)", "linear-gradient(#4ECCD0, #CFF1F2)",1000) 
     buttons.forEach(button => button.style.backgroundColor = '#CFF1F2');
     startButton.style.background = '#4ECCD0'
     container.style.backgroundColor = "#BFECEE"
