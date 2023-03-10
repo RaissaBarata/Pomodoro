@@ -5,6 +5,8 @@ const changeBackground1 = document.querySelector('.changeBackground1')
 const changeBackground2 = document.querySelector('.changeBackground2')
 const startButton = document.querySelector('.startButton')
 const container = document.querySelector('.container')
+const timer = document.querySelector('.timer')
+
 
 
     
@@ -21,59 +23,81 @@ function switchOff() {
     })
 }
 
+// "linear-gradient(rgb(207,67,239), rgb(245,217,252))", "linear-gradient(rgb(125,86,240), rgb(211,198,250))"
+//"linear-gradient(#CF43EF, #F5D9FC)", "linear-gradient(#7D56F0, #D3C6FA)"
 changeBackground.addEventListener('click', () => {
-    // body.style.background = "linear-gradient(#7D56F0, #D3C6FA)"
-    animateLinearGradient("linear-gradient(#CF43EF, #F5D9FC)", "linear-gradient(#7D56F0, #D3C6FA)", 1000)
-    buttons.forEach(button => button.style.backgroundColor = '#D3C6FA');
-    startButton.style.background = '#7D56F0'
-    container.style.backgroundColor = "#C5B4F8"
+    changeTimer("linear-gradient(rgb(125,86,240), rgb(211,198,250))", "#D3C6FA", "#7D56F0", "#C5B4F8", "25:00");
 })
 
+
+
 changeBackground1.addEventListener('click', () => {
-    animateLinearGradient("linear-gradient(#7D56F0, #D3C6FA)", "linear-gradient(#CF43EF, #F5D9FC)", 1000) 
-    buttons.forEach(button => button.style.backgroundColor = '#F5D9FC');
-    startButton.style.background = '#CF43EF'
-    container.style.backgroundColor = "#f1c7fa"
+  changeTimer("linear-gradient(rgb(207,67,239), rgb(245,217,252))", '#F5D9FC', '#CF43EF', "#f1c7fa",'5:00');
+
 })
 
 changeBackground2.addEventListener('click', () => {
-    animateLinearGradient("linear-gradient(#CF43EF, #F5D9FC)", "linear-gradient(#4ECCD0, #CFF1F2)",1000) 
-    buttons.forEach(button => button.style.backgroundColor = '#CFF1F2');
-    startButton.style.background = '#4ECCD0'
-    container.style.backgroundColor = "#BFECEE"
+  changeTimer("linear-gradient(rgb(78, 204, 208), rgb(207, 241, 242))", '#CFF1F2', "#4ECCD0", "#BFECEE", "15:00");
 })
 
+function changeTimer(endGradient, timerButtonsColor, startButtonColor, containerColor, startTimer) {
+  const bodyRgb = getComputedStyle(body).getPropertyValue('background-image');
+  animateLinearGradient(bodyRgb, endGradient, 1000);
+  buttons.forEach(button => button.style.backgroundColor = timerButtonsColor);
+  startButton.style.background = startButtonColor;
+  container.style.backgroundColor = containerColor;
+  timer.textContent = startTimer;
+}
+
 function animateLinearGradient(startGradient, endGradient, duration) {
-    const element = document.body; 
-    const colors1 = startGradient.match(/#[0-9a-f]{6}/gi); // Array de cores do primeiro gradient
-    const colors2 = endGradient.match(/#[0-9a-f]{6}/gi); // Array de cores do segundo gradient
-    const gradients = []; // Array com os valores de gradient para cada quadro
-    const frames = duration / 1000 * 60; // Número de quadros na animação (assumindo 60fps)
-  
-    // Cria um novo gradient para cada quadro da animação
-    for (let i = 0; i <= frames; i++) {
-      const gradient = [];
-      for (let j = 0; j < colors1.length; j++) {
-        const color1 = colors1[j];
-        const color2 = colors2[j];
-        const r = Math.round(parseInt(color1.slice(1, 3), 16) + (parseInt(color2.slice(1, 3), 16) - parseInt(color1.slice(1, 3), 16)) / frames * i);
-        const g = Math.round(parseInt(color1.slice(3, 5), 16) + (parseInt(color2.slice(3, 5), 16) - parseInt(color1.slice(3, 5), 16)) / frames * i);
-        const b = Math.round(parseInt(color1.slice(5, 7), 16) + (parseInt(color2.slice(5, 7), 16) - parseInt(color1.slice(5, 7), 16)) / frames * i);
-        gradient.push(`#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`);
-      }
-      gradients.push(`linear-gradient(${gradient.join(', ')})`);
+  const element = document.body;
+  const hexToRgb = (hex) => hex.match(/[a-f0-9]{2}/gi).map((x) => parseInt(x, 16));
+  const colors1 = startGradient.match(/rgb\(.+?\)/g).map((color) => color.match(/\d+/g).map(Number)); // Array de cores do primeiro gradient
+  const colors2 = endGradient.match(/rgb\(.+?\)/g).map((color) => color.match(/\d+/g).map(Number)); // Array de cores do segundo gradient
+  const gradients = []; // Array com os valores de gradient para cada quadro
+  const frames = duration / 1000 * 60; // Número de quadros na animação (assumindo 60fps)
+
+  // Cria um novo gradient para cada quadro da animação
+  for (let i = 0; i <= frames; i++) {
+    const gradient = [];
+    for (let j = 0; j < colors1.length; j++) {
+      const color1 = colors1[j];
+      const color2 = colors2[j];
+      const r = Math.round(color1[0] + (color2[0] - color1[0]) / frames * i);
+      const g = Math.round(color1[1] + (color2[1] - color1[1]) / frames * i);
+      const b = Math.round(color1[2] + (color2[2] - color1[2]) / frames * i);
+      gradient.push(`rgb(${r},${g},${b})`);
     }
-  
-    // Função que atualiza o valor do gradient a cada quadro da animação
-    let currentFrame = 0;
-    function updateGradient() {
-      element.style.background = gradients[currentFrame];
-      currentFrame++;
-      if (currentFrame < frames) {
-        requestAnimationFrame(updateGradient);
-      }
+    gradients.push(`linear-gradient(${gradient.join(', ')})`);
+  }
+
+  // Função que atualiza o valor do gradient a cada quadro da animação
+  let currentFrame = 0;
+  function updateGradient() {
+    element.style.background = gradients[currentFrame];
+    currentFrame++;
+    if (currentFrame < frames) {
+      requestAnimationFrame(updateGradient);
     }
-  
-    // Inicia a animação
-    updateGradient();
+  }
+
+  // Inicia a animação
+  updateGradient();
+}
+
+
+  var timeStopped = false;
+  startButton.addEventListener('click', () => {
+    timeStopped = !timeStopped;
+    stopTimer(timeStopped)
+  })
+
+  function stopTimer(timerStopped) {
+    startButton.setAttribute('stop', timerStopped);
+    if (timeStopped) {
+      startButton.innerText = "Stop";
+    } else {
+      startButton.innerText = "Start";
+    }
+    
   }

@@ -43,10 +43,6 @@ button {
 
 }
 
-button:hover {
-    background-color: #997CF2;
-
-}
 
 button[active="true"] {
     font-weight: 700;
@@ -63,16 +59,21 @@ button[active="true"] {
 
 }
 
-.startButton{
+.startButton {
+    width: 250px;
     font-size: 24px;
     font-weight: 500;
     background-color:  #7D56F0;
     margin: 15px 30px 15px 100px;
     padding: 15px 100px 15px 100px;
     color: rgba(14, 14, 14, 0.623);
+    box-shadow: rgba(0, 0, 0, 0.288) 0px 10px 5px;
+    transition-duration: 0.3s;
 
 }
 
-.startButton:hover{
-    background-color: #C5B5F8;
+
+.startButton[stop="true"] {
+    box-shadow: rgba(0, 0, 0, 0.288) 0px 6px 10px;
+    transform: translateY(6px);
 }
