@@ -6,6 +6,8 @@ const changeBackground2 = document.querySelector('.changeBackground2')
 const startButton = document.querySelector('.startButton')
 const container = document.querySelector('.container')
 const timer = document.querySelector('.timer')
+let isRunning = false;
+
 
 
 
@@ -23,8 +25,7 @@ function switchOff() {
     })
 }
 
-// "linear-gradient(rgb(207,67,239), rgb(245,217,252))", "linear-gradient(rgb(125,86,240), rgb(211,198,250))"
-//"linear-gradient(#CF43EF, #F5D9FC)", "linear-gradient(#7D56F0, #D3C6FA)"
+// altera as propriedades e as cores do fundo e dos botões;
 changeBackground.addEventListener('click', () => {
     changeTimer("linear-gradient(rgb(125,86,240), rgb(211,198,250))", "#D3C6FA", "#7D56F0", "#C5B4F8", "25:00");
 })
@@ -41,6 +42,9 @@ changeBackground2.addEventListener('click', () => {
 })
 
 function changeTimer(endGradient, timerButtonsColor, startButtonColor, containerColor, startTimer) {
+  if (isRunning) {
+    isRunning = false;
+   }
   const bodyRgb = getComputedStyle(body).getPropertyValue('background-image');
   animateLinearGradient(bodyRgb, endGradient, 1000);
   buttons.forEach(button => button.style.backgroundColor = timerButtonsColor);
@@ -85,19 +89,47 @@ function animateLinearGradient(startGradient, endGradient, duration) {
   updateGradient();
 }
 
+// botão que para o cronometro
+var timeStopped = false;
+startButton.addEventListener('click', () => {
+  timeStopped = !timeStopped;
+  stopTimer(timeStopped)
+})
 
-  var timeStopped = false;
-  startButton.addEventListener('click', () => {
-    timeStopped = !timeStopped;
-    stopTimer(timeStopped)
-  })
-
-  function stopTimer(timerStopped) {
-    startButton.setAttribute('stop', timerStopped);
-    if (timeStopped) {
-      startButton.innerText = "Stop";
-    } else {
-      startButton.innerText = "Start";
-    }
-    
+function stopTimer(timerStopped) {
+  startButton.setAttribute('stop', timerStopped);
+  if (timeStopped) {
+    startButton.innerText = "Stop";
+  } else {
+    startButton.innerText = "Start";
   }
+  
+}
+
+//para rodar/parar o cronometro:
+let intervalId;
+
+startButton.addEventListener("click", () => {
+if (!isRunning) {
+  let segundos = 0;
+  let minutos = 25;
+  intervalId = setInterval(() => {
+    if (segundos == 0 && minutos == 0) {
+      clearInterval(intervalId);
+      alert("Time to rest!");
+      isRunning = false;
+    } else if (segundos == 0) {
+      segundos = 59;
+      minutos--;
+    } else {
+      segundos--;
+    }
+    timer.innerHTML = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+  }, 1000);
+  isRunning = true;
+} else {
+  clearInterval(intervalId);
+  isRunning = false;
+  
+}
+});
